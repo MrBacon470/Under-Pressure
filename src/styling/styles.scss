@@ -1,0 +1,217 @@
+@use 'sass:math';
+@use 'sass:list';
+/* Variables */
+/* Color Vars */
+$background-color: #191e24;
+$text-color: #808080;
+$colors: (
+    "green": #2ee55c,
+    "red": #f22318,
+    "yellow": #ffb726,
+    "orange": #ff8533,
+    "blue": #33b4ff,
+    "purple": #b459ff,
+);
+
+
+$navBar-Height: 5vh;
+$resourceHeader-Height: 10vh;
+/* Font Variables */
+$fonts-regular: 'Neon';
+$fonts-bold: 'Neon Bold';
+//'Space Mono', 'Space Mono Bold', 
+/* Font Family Imports */
+
+@font-face {
+    font-family: 'Neon';
+    src: url('fonts/MonaspaceNeon-Medium.otf');
+}
+
+@font-face {
+    font-family: 'Neon Bold';
+    src: url('fonts/MonaspaceNeon-Bold.otf');
+}
+
+/* Mixins */
+
+@mixin coloredFont($color: $text-color) {
+    color: $color;
+}
+
+@mixin standardButton($color: $text-color) {
+    font-family: $fonts-bold;
+    color: $color;
+    border: 2px solid $color;
+    background-color: $background-color;
+    transition-duration: 0.15s;
+    font-size: 1em;
+}
+
+@mixin standardButtonHover($color: $text-color) {
+    font-family: $fonts-bold;
+    color: $background-color;
+    border: 2px solid $color;
+    background-color: $color;
+    transition-duration: 0.15s;
+    font-size: 1em;
+}
+
+@mixin zoneHolder($color) {
+    color: $color;
+    border: 2px solid $color;
+    padding: 1vh 1vw 1vh 1vw;
+
+    h1, h2, h3, h4, p {
+        color: $color;
+    }
+}
+
+@mixin modalContainer($color: $text-color) {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 30vw;
+    z-index: 6969;
+    padding: 5px;
+    border: 4px solid $color;
+    background-color: $background-color;
+
+    h2 {color: $color;}
+}
+
+/* Root Vars & Global Styling */
+
+* {
+    background-color: $background-color;
+    font-family: $fonts-regular;
+    color: $text-color;
+    text-align: center;
+}
+
+body {
+    margin: 0;
+    overflow: hidden;
+    user-select: none;
+}
+
+img {
+    height: 5rem;
+    width: 5rem;
+    padding: 0.5em;
+    border: 2px solid $text-color;
+}
+
+h1, h2, h3, h4 {
+    font-family: $fonts-bold;
+}
+
+input {
+    border: 2px solid $text-color;
+}
+
+button {@include standardButton()}
+button:hover {@include standardButtonHover()}
+button.selected {@include standardButtonHover()}
+
+/* Class Specific Styling */
+/* Text Classes */
+@each $color, $value in $colors {
+  .#{$color}Text {
+    @include coloredFont($value);
+  }
+}
+
+.boldText {
+    font-family:$fonts-bold;
+}
+
+/* Button Classes */
+@each $color, $value in $colors {
+  .#{$color}Button {
+    @include standardButton($value);
+    &:hover,
+    &.selected {
+      @include standardButtonHover($value);
+    }
+  }
+}
+
+/* All Other Classes */
+.flexRow {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.flexCol {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.infoHolder {
+    justify-content: flex-start;
+    img {
+        height: 2rem;
+        width: 2rem;
+    }
+}
+
+.tabContent {
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.settingsRow {
+    margin-top: 1vh;
+    margin-bottom: 1vh;
+
+    button, a {
+        margin-left: 0.5vw;
+        margin-right: 0.5vw;
+    }
+}
+
+.modalContainer {@include modalContainer()}
+
+@each $color, $value in $colors {
+    .modalContainer#{$color} {@include modalContainer($value)}
+}
+
+/* ID Specific Styling */
+
+#gameHolder {
+    height: 100vh;
+    width: 100vw;
+}
+
+#resourceHeader {
+    height: $resourceHeader-Height;
+    width: 100vw;
+    padding: 0 1vw 0 1vw;
+    border-bottom: 2px solid map-get($map: $colors, $key: gray);
+
+    div, img, p {
+        margin: 0 0.25vw 0 0.25vw;
+    }
+
+    #heatInfoHolder {
+        img {
+            border-color: map-get($map: $colors, $key: 'red');
+        }
+    }
+}
+
+#navBar {
+    height: $navBar-Height;
+    width: 100vw;
+    padding: 0 1vw 0 1vw;
+    border-bottom: 2px solid map-get($map: $colors, $key: gray);
+
+    button {
+        margin: 0 0.25vw 0 0.25vw;
+    }
+}

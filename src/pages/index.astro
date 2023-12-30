@@ -1,0 +1,34 @@
+---
+	import '../styling/styles.scss';
+	import Header from '../components/Header.astro';
+	import Settings from '../components/Settings.astro';
+---
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/png" href="/images/pressure.png" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<title>Under Pressure</title>
+	</head>
+	<body>
+		<div id="gameHolder">
+			<Header/>
+			<div id="navBar" class="flexRow"></div>
+			<div id="mainContentHolder">
+				<Settings/>
+			</div>
+		</div>
+		<div id="scriptsHolder">
+			<script src="scripts/internal/BreakEternity.js" is:inline></script>
+			<script src="scripts/internal/cache.js" is:inline></script>
+			<script src="scripts/internal/formatting.js" is:inline></script>
+			<script src="scripts/internal/modalmanager.js" is:inline></script>
+			<script src="scripts/internal/utilities.js" is:inline></script>
+
+			<script src="scripts/data.js" is:inline></script>
+			<script src="scripts/main.js" is:inline></script>
+		</div>
+	</body>
+</html>
