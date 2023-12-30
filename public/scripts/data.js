@@ -1,6 +1,9 @@
 
 function getDefaultData() {
     return {
+        funds: Decimal.dZero,
+        oilProducts: new Array(5).fill(Decimal.dZero),
+        
         currentTab: 0,
         currentVersion: 'v0.0.0'
     }

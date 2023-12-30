@@ -1,6 +1,9 @@
 ---
 	import '../styling/styles.scss';
 	import Header from '../components/Header.astro';
+	import Refinery from '../components/Refinery.astro';
+	import Processing from '../components/Processing.astro';
+	import Shipping from '../components/Shipping.astro';
 	import Settings from '../components/Settings.astro';
 ---
 
@@ -17,6 +20,9 @@
 			<Header/>
 			<div id="navBar" class="flexRow"></div>
 			<div id="mainContentHolder">
+				<Refinery/>
+				<Processing/>
+				<Shipping/>
 				<Settings/>
 			</div>
 		</div>
@@ -29,6 +35,7 @@
 
 			<script src="scripts/data.js" is:inline></script>
 			<script src="scripts/main.js" is:inline></script>
+			<script src="scripts/refinery.js" is:inline></script>
 		</div>
 	</body>
 </html>

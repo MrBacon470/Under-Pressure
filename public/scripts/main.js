@@ -1,6 +1,6 @@
 const tabData = [
     {
-        name: 'Refining',
+        name: 'Refinery',
         color: '',
         subtabs: []
     }, 
@@ -20,7 +20,8 @@ const tabData = [
         subtabs: []
     }
 ]
-
+// 10-40 mmHG (torr) is ideal pressure (Too Low or Too High Damages Refinery Column)
+// 370-380C is ideal temperature (Too Low or Too High Produces Coke or Residual Gas Byproducts)
 function initGame() {
     //HTML Generation
     for(let i = 0; i < tabData.length; i++) {
