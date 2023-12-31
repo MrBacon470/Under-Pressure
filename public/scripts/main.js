@@ -38,8 +38,13 @@ function initGame() {
         } 
         DOMCacheGetOrSet(`navButton${i}`).addEventListener('click',() => switchTab(i))
     }
-    //Power Production Tab
-    //Prestige Tab
+    //Refinery Tab
+    for(let i = 0; i < data.refineryToggles.length; i++) {
+        DOMCacheGetOrSet(`refineryToggle${i}`).classList = data.refineryToggles[i] ? 'greenButton' : 'redButton'
+        DOMCacheGetOrSet(`refineryToggle${i}`).innerText = refineryToggleNames[i] + ( data.refineryToggles[i] ? ' [ON]' : ' [OFF]')
+        DOMCacheGetOrSet(`refineryToggle${i}`).addEventListener('click',() => updateRefineryToggle(i))
+    }
+    //Processing Tab
     //Settings Tab
     DOMCacheGetOrSet('saveButton').addEventListener('click', () => save())
     DOMCacheGetOrSet('exportButton').addEventListener('click',() => exportSave())
