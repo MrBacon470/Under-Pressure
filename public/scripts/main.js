@@ -15,6 +15,11 @@ const tabData = [
         subtabs: []
     },
     {
+        name: 'Research & Devlopment',
+        color: 'purple',
+        subtabs: []
+    },
+    {
         name: 'Settings',
         color: '',
         subtabs: []
@@ -43,7 +48,15 @@ function initGame() {
 }
 
 function updateGame() {
-
+    // Information Updates
+    updateRefinery()
+    //Global HTML Updates
+    DOMCacheGetOrSet('pressureInfoText').innerText = `Refinery Pressure: ${format(data.refineryValues[0])} mmHg`
+    DOMCacheGetOrSet('heatInfoText').innerText = `Refinery Temp: ${format(data.refineryValues[1])}°K`
+    DOMCacheGetOrSet('capacityInfoText').innerText = `Refinery Capacity: ${format(data.refineryValues[2])}/${format(baseRanges.capacity)} L`
+    DOMCacheGetOrSet('moneyInfoText').innerText = `Funds: $${format(data.funds)}`
+    //HTML Update Functions
+    updateRefineryHTML()
 }
 
 function calculateOfflineProgress() {

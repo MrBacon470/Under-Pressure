@@ -3,7 +3,8 @@ function getDefaultData() {
     return {
         funds: Decimal.dZero,
         oilProducts: new Array(5).fill(Decimal.dZero),
-        
+        refineryValues: new Array(4).fill(Decimal.dZero),
+        refineryToggles: new Array(3).fill(false),
         currentTab: 0,
         currentVersion: 'v0.0.0'
     }
