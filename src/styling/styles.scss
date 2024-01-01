@@ -24,12 +24,12 @@ $fonts-bold: 'Neon Bold';
 
 @font-face {
     font-family: 'Neon';
-    src: url('fonts/MonaspaceNeon-Medium.otf');
+    src: url('fonts/MonaspaceNeon-Medium.otf') format('opentype');
 }
 
 @font-face {
     font-family: 'Neon Bold';
-    src: url('fonts/MonaspaceNeon-Bold.otf');
+    src: url('fonts/MonaspaceNeon-Bold.otf') format('opentype');
 }
 
 /* Mixins */
