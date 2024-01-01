@@ -49,3 +49,8 @@ function getTotalCost(base,rate,level,maxLevel,interval) {
 function addHTML(target,htmlStr) {
     document.getElementById(target).insertAdjacentHTML('beforeend',htmlStr)
 }
+
+function getRandomArbitrary(min, max) {
+    return Math.random() * (max - min) + min;
+}
+  

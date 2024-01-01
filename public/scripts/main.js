@@ -1,3 +1,4 @@
+let diff = 0;
 const tabData = [
     {
         name: 'Refinery',
@@ -45,6 +46,15 @@ function initGame() {
         DOMCacheGetOrSet(`refineryToggle${i}`).addEventListener('click',() => updateRefineryToggle(i))
     }
     //Processing Tab
+    //Shipping Tab
+    DOMCacheGetOrSet(`resourceSellAmountButton`).addEventListener('click',() => {
+        data.buyAmount[0] = data.buyAmount[0] + 1 < 4 ? data.buyAmount[0] + 1 : 0 
+    })
+    DOMCacheGetOrSet(`napthaSellButton`).addEventListener('click', () => sellResource(0))
+    DOMCacheGetOrSet(`fuelOilSellButton`).addEventListener('click', () => sellResource(1))
+    DOMCacheGetOrSet(`mineralOilSellButton`).addEventListener('click', () => sellResource(2))
+    DOMCacheGetOrSet(`cokeSellButton`).addEventListener('click', () => sellResource(3))
+    DOMCacheGetOrSet(`residualGasSellButton`).addEventListener('click', () => sellResource(4))
     //Settings Tab
     DOMCacheGetOrSet('saveButton').addEventListener('click', () => save())
     DOMCacheGetOrSet('exportButton').addEventListener('click',() => exportSave())
@@ -53,8 +63,11 @@ function initGame() {
 }
 
 function updateGame() {
+    diff = (Date.now() - data.time) / 1000
+    data.time = Date.now()
     // Information Updates
     updateRefinery()
+    updateShipping()
     //Global HTML Updates
     DOMCacheGetOrSet('pressureInfoText').innerText = `Refinery Pressure: ${format(data.refineryValues[0])} mmHg`
     DOMCacheGetOrSet('heatInfoText').innerText = `Refinery Temp: ${format(data.refineryValues[1])}°K`
@@ -62,6 +75,7 @@ function updateGame() {
     DOMCacheGetOrSet('moneyInfoText').innerText = `Funds: $${format(data.funds)}`
     //HTML Update Functions
     updateRefineryHTML()
+    updateShippingHTML()
 }
 
 function calculateOfflineProgress() {

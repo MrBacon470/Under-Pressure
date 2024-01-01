@@ -3,9 +3,11 @@ function getDefaultData() {
     return {
         funds: Decimal.dZero,
         oilProducts: new Array(5).fill(Decimal.dZero),
-        refineryValues: new Array(4).fill(Decimal.dZero),
-        refineryToggles: new Array(3).fill(false),
+        refineryValues: [Decimal.dZero,D(273.15),Decimal.dZero,D(100)],
+        refineryToggles: new Array(2).fill(false),
+        buyAmount: new Array(1).fill(0),
         currentTab: 0,
+        time: Date.now(),
         currentVersion: 'v0.0.0'
     }
 }
