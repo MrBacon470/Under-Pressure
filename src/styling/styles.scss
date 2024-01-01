@@ -76,6 +76,8 @@ body {
     margin: 0;
     overflow: hidden;
     user-select: none;
+    touch-action: pan-x pan-y;
+    overflow-y: auto;
 }
 
 div {
@@ -126,9 +128,17 @@ button.selected {@include standardButtonHover()}
 }
 
 /* All Other Classes */
+.flexRowWrap {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
 .flexRow {
     display: flex;
-    flex-direction: row wrap;
+    flex-direction: row;
     justify-content: center;
     align-items: center;
 }
@@ -149,11 +159,6 @@ button.selected {@include standardButtonHover()}
     }
 }
 
-.tabContent {
-    overflow-x: hidden;
-    overflow-y: auto;
-}
-
 .settingsRow {
     margin-top: 1vh;
     margin-bottom: 1vh;
@@ -169,10 +174,55 @@ button.selected {@include standardButtonHover()}
     width: 10rem;
 }
 
+.importantColumn {
+    padding: 0.25vh 0.25vw 0.25vh 0.25vw;
+    border-left: 2px solid;
+    border-right: 2px solid;
+    min-height: 50vh;
+    p, button, div {
+        margin-top: 0.5vh;
+        margin-bottom: 0.5vh;
+        width: 100%;
+    }
+}
+
 .modalContainer {@include modalContainer()}
 
 @each $color, $value in $colors {
     .modalContainer#{$color} {@include modalContainer($value)}
+}
+
+.notification-info {
+    background-color: map-get($map: $colors, $key: 'blue');
+    border: 5px solid white;
+    border-radius: 5px;
+    color: $background-color;
+    padding: .25em;
+    text-align: center;
+}
+.notification-success {
+    background-color: map-get($map: $colors, $key: 'green');
+    border: 5px solid white;
+    border-radius: 5px;
+    color: $background-color;
+    padding: .25em;
+    text-align: center;
+}
+.notification-warn {
+    background-color: map-get($map: $colors, $key: 'yellow');
+    border: 5px solid white;
+    border-radius: 5px;
+    color: $background-color;
+    padding: .25em;
+    text-align: center;
+}
+.notification-error {
+    background-color: map-get($map: $colors, $key: 'red');
+    border: 5px solid white;
+    border-radius: 5px;
+    color: $background-color;
+    padding: .25em;
+    text-align: center;
 }
 
 /* ID Specific Styling */
@@ -182,10 +232,16 @@ button.selected {@include standardButtonHover()}
     width: 100vw;
 }
 
+#notificationHolder {
+    position: fixed;
+    right: 0;
+    margin-top: .5em;
+    margin-right: .5em;
+}
+
 #resourceHeader {
-    height: $resourceHeader-Height;
     width: 100vw;
-    padding: 0 1vw 0 1vw;
+    padding: 1vh 1vw 1vh 1vw;
     border-bottom: 2px solid map-get($map: $colors, $key: gray);
 
     div, img, p {
@@ -204,9 +260,8 @@ button.selected {@include standardButtonHover()}
 }
 
 #navBar {
-    height: $navBar-Height;
     width: 100vw;
-    padding: 0 1vw 0 1vw;
+    padding: 1vh 1vw 1vh 1vw;
     border-bottom: 2px solid map-get($map: $colors, $key: gray);
 
     button {
@@ -214,14 +269,3 @@ button.selected {@include standardButtonHover()}
     }
 }
 
-#distillationColumnInfoHolder, #columnProdInfoHolder, #rawProductsInfoHolder {
-    padding: 0.25vh 0.25vw 0.25vh 0.25vw;
-    border-left: 2px solid;
-    border-right: 2px solid;
-    height: 50vh;
-    p, button, div {
-        margin-top: 0.5vh;
-        margin-bottom: 0.5vh;
-        width: 100%;
-    }
-}

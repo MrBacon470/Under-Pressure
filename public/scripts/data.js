@@ -2,9 +2,13 @@
 function getDefaultData() {
     return {
         funds: Decimal.dZero,
+        ceramic: Decimal.dZero,
+        hasCollapsed: false,
         oilProducts: new Array(5).fill(Decimal.dZero),
         refineryValues: [Decimal.dZero,D(273.15),Decimal.dZero,D(100)],
         refineryToggles: new Array(2).fill(false),
+        regularUpgrades: new Array(5).fill(Decimal.dZero),
+        collapseUpgrades: new Array(5).fill(Decimal.dZero),
         buyAmount: new Array(1).fill(0),
         currentTab: 0,
         time: Date.now(),
@@ -17,7 +21,7 @@ const saveName = 'UnderPressureSave'
 
 function save() {
     window.localStorage.setItem(saveName,JSON.stringify(data))
-    //TODO: Generate Notifications
+    generateNotification('Saved Game!','info')
 }
 
 function load() {
@@ -68,6 +72,7 @@ function exportSave() {
     linkObj.download = `${saveName}-${new Date()}.txt`
     linkObj.click()
     URL.revokeObjectURL(linkObj)
+    generateNotification('Exported Save to File','success')
 }
 
 function deleteSave() {
@@ -75,4 +80,5 @@ function deleteSave() {
     exportSave()
     window.localStorage.removeItem(saveName)
     location.reload()
+    generateNotification('Exported & Deleted Save','error')
 }

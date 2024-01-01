@@ -16,7 +16,7 @@ const tabData = [
         subtabs: []
     },
     {
-        name: 'Research & Devlopment',
+        name: 'Research & Development',
         color: 'purple',
         subtabs: []
     },
@@ -38,6 +38,12 @@ function initGame() {
             addHTML('navBar',`<button id="navButton${i}" class="${tabData[i].color}Button">${tabData[i].name}</button>`)
         } 
         DOMCacheGetOrSet(`navButton${i}`).addEventListener('click',() => switchTab(i))
+    }
+    for(let i = 0; i < collapseUpgrades.length; i++) {
+        addHTML('collapseUpgradesHolder',`<button id="collapseUpgrade${i}">Collapse Upgrade ${i}</button>`)
+    }
+    for(let i = 0; i < regularUpgrades.length; i++) {
+        addHTML('regularUpgradesHolder',`<button id="regularUpgrade${i}">Regular Upgrade ${i}</button>`)
     }
     //Refinery Tab
     for(let i = 0; i < data.refineryToggles.length; i++) {
@@ -68,14 +74,19 @@ function updateGame() {
     // Information Updates
     updateRefinery()
     updateShipping()
+    updateCollapse()
     //Global HTML Updates
     DOMCacheGetOrSet('pressureInfoText').innerText = `Refinery Pressure: ${format(data.refineryValues[0])} mmHg`
     DOMCacheGetOrSet('heatInfoText').innerText = `Refinery Temp: ${format(data.refineryValues[1])}°K`
     DOMCacheGetOrSet('capacityInfoText').innerText = `Refinery Capacity: ${format(data.refineryValues[2])}/${format(baseRanges.capacity)} L`
     DOMCacheGetOrSet('moneyInfoText').innerText = `Funds: $${format(data.funds)}`
+    DOMCacheGetOrSet('ceramicInfoHolder').style.display = data.hasCollapsed ? 'flex' : 'none'
+    if(data.hasCollapsed)
+        DOMCacheGetOrSet('ceramicInfoText').innerText = `Ceramic: ${format(data.ceramic)}`
     //HTML Update Functions
     updateRefineryHTML()
     updateShippingHTML()
+    updateCollapseHTML()
 }
 
 function calculateOfflineProgress() {
