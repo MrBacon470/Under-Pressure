@@ -22,16 +22,6 @@ $fonts-bold: 'Neon Bold';
 //'Space Mono', 'Space Mono Bold', 
 /* Font Family Imports */
 
-@font-face {
-    font-family: 'Neon';
-    src: url('fonts/MonaspaceNeon-Medium.otf');
-}
-
-@font-face {
-    font-family: 'Neon Bold';
-    src: url('fonts/MonaspaceNeon-Bold.otf');
-}
-
 /* Mixins */
 
 @mixin coloredFont($color: $text-color) {
