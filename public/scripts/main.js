@@ -41,9 +41,11 @@ function initGame() {
     }
     for(let i = 0; i < collapseUpgrades.length; i++) {
         addHTML('collapseUpgradesHolder',`<button id="collapseUpgrade${i}">Collapse Upgrade ${i}</button>`)
+        DOMCacheGetOrSet(`collapseUpgrade${i}`).addEventListener('click', () => purchaseCollapseUpgrade(i))
     }
     for(let i = 0; i < regularUpgrades.length; i++) {
         addHTML('regularUpgradesHolder',`<button id="regularUpgrade${i}">Regular Upgrade ${i}</button>`)
+        DOMCacheGetOrSet(`regularUpgrade${i}`).addEventListener('click', () => purchaseRegularUpgrade(i))
     }
     //Refinery Tab
     for(let i = 0; i < data.refineryToggles.length; i++) {
@@ -72,17 +74,21 @@ function updateGame() {
     diff = (Date.now() - data.time) / 1000
     data.time = Date.now()
     // Information Updates
+    calculateRefineryValues()
     updateRefinery()
     updateShipping()
     updateCollapse()
     //Global HTML Updates
+    DOMCacheGetOrSet('navButton3').style.display = data.hasCollapsed ? 'block' : 'none'
+    
     DOMCacheGetOrSet('pressureInfoText').innerText = `Refinery Pressure: ${format(data.refineryValues[0])} mmHg`
     DOMCacheGetOrSet('heatInfoText').innerText = `Refinery Temp: ${format(data.refineryValues[1])}°K`
-    DOMCacheGetOrSet('capacityInfoText').innerText = `Refinery Capacity: ${format(data.refineryValues[2])}/${format(baseRanges.capacity)} L`
+    DOMCacheGetOrSet('capacityInfoText').innerText = `Refinery Capacity: ${format(data.refineryValues[2])}/${format(calculatedRefineryValues.capacity)} L`
     DOMCacheGetOrSet('moneyInfoText').innerText = `Funds: $${format(data.funds)}`
+
     DOMCacheGetOrSet('ceramicInfoHolder').style.display = data.hasCollapsed ? 'flex' : 'none'
     if(data.hasCollapsed)
-        DOMCacheGetOrSet('ceramicInfoText').innerText = `Ceramic: ${format(data.ceramic)}`
+        DOMCacheGetOrSet('ceramicInfoText').innerText = `Ceramic: ${format(data.ceramic)}\nPotential Gain: ${format(ceramicGain)}`
     //HTML Update Functions
     updateRefineryHTML()
     updateShippingHTML()
@@ -90,7 +96,8 @@ function updateGame() {
 }
 
 function calculateOfflineProgress() {
-
+    diff = (Date.now() - data.time) / 1000
+    generateNotification(`Welcome Back\nYou were gone for: ${formatTimeAlternate(diff)}`,'info')
 }
 
 function switchTab(id) {
@@ -112,10 +119,10 @@ window.onload = function() {
     initGame()
     calculateOfflineProgress()
     switchTab(data.currentTab)
-
     DOMCacheGetOrSet('currentVersionText').innerText = `Current Version: ${getDefaultData().currentVersion}`
+    //Start Update Loop After Game has been initialized
+    window.setInterval(() => updateGame(), 50)
 }
-//50ms Updates
-window.setInterval(() => updateGame(), 50);
+
 //30s Auto Save
 window.setInterval(() => save(),30000)

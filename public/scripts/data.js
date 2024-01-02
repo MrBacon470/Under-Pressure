@@ -10,6 +10,7 @@ function getDefaultData() {
         regularUpgrades: new Array(5).fill(Decimal.dZero),
         collapseUpgrades: new Array(5).fill(Decimal.dZero),
         buyAmount: new Array(1).fill(0),
+        settingsToggles: new Array(1).fill(false),
         currentTab: 0,
         time: Date.now(),
         currentVersion: 'v0.0.0'

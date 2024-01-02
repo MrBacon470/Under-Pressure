@@ -1,7 +1,7 @@
 const collapseUpgrades = [
     {
         name: 'Improve Distillation Column',
-        desc: '2x Base Refinery Capacity\n1.5x Max Pressure\n1.5x Max Perfect Temperature\n1.25x Base Oil Processing Rate',
+        desc: '2x Base Refinery Capacity\n1.5x Max Pressure\n1.5x Max Perfect Temperature\n2.5x Refinery Integrity',
         baseCost: D(5),
         maxLevel: D(6)
     },
@@ -34,13 +34,13 @@ const regularUpgrades = [
     },
     {
         name: 'Improve Oil Feed Rate',
-        desc: '^1.50 Oil/s',
+        desc: '^1.25 Oil/s',
         baseCost: D(5000),
         maxLevel: Decimal.dTen
     },
     {
         name: 'Upgrade Oil Processor',
-        desc: 'x1.5 Oil Processing/s',
+        desc: 'x1.50 Oil Processing/s',
         baseCost: D(1e4),
         maxLevel: D(5)
     }
@@ -52,7 +52,7 @@ let regularUpgradeCost = new Array(regularUpgrades.length).fill(Decimal.dZero)
 
 function updateCollapse() {
     ceramicGain = data.refineryValues[0].lt(baseRanges.pressure) ? Decimal.dZero : Decimal.sqrt(data.refineryValues[0].div(baseRanges.pressure))
-    ceramicGain = ceramicGain.times(Decimal.dOne.add(Decimal.log10(data.funds)))
+    ceramicGain = data.funds.lt(1) ? Decimal.dZero :ceramicGain.times(Decimal.dOne.add(Decimal.log10(data.funds)))
 
     for(let i = 0; i < collapseUpgradeCost.length; i++) {
         collapseUpgradeCost[i] = collapseUpgrades[i].baseCost.times(Decimal.pow(upgradeScaleRate[0],data.collapseUpgrades[i]))
@@ -93,5 +93,38 @@ function updateCollapseHTML() {
 }
 
 function collapse() {
+    data.hasCollapsed = true
+    data.ceramic = data.ceramic.add(ceramicGain)
+    data.funds = Decimal.dZero
+    data.refineryValues = getDefaultData().refineryValues
+    data.refineryToggles = getDefaultData().refineryToggles
+    data.oilProducts = getDefaultData().oilProducts
+    data.regularUpgrades = getDefaultData().regularUpgrades
+    
+    if(!data.settingsToggles[0]) {
+        createAlert('Your refinery collapsed!',`You've gained +${format(ceramicGain)} Cermaic but everything else has been reset`,'purple')
+    }
+    else {
+        generateNotification(`Collapsed: +${format(ceramicGain)} Ceramic`,'success')
+    }
+}
 
+function purchaseCollapseUpgrade(id) {
+    updateCollapse()
+    if(id < 0 || id >= collapseUpgrades.length) return
+    if(data.ceramic.lt(collapseUpgradeCost[id])) return
+    if(data.collapseUpgrades[id].gte(collapseUpgrades[id].maxLevel)) return
+
+    data.collapseUpgrades[id] = data.collapseUpgrades[id].add(1)
+    data.ceramic = data.ceramic.sub(collapseUpgradeCost[id])
+}
+
+function purchaseRegularUpgrade(id) {
+    updateCollapse()
+    if(id < 0 || id >= regularUpgrades.length) return
+    if(data.funds.lt(regularUpgradeCost[id])) return
+    if(data.regularUpgrades[id].gte(regularUpgrades[id].maxLevel)) return
+    
+    data.regularUpgrades[id] = data.regularUpgrades[id].add(1)
+    data.funds = data.funds.sub(regularUpgradeCost[id])
 }
