@@ -51,7 +51,7 @@ let collapseUpgradeCost = new Array(collapseUpgrades.length).fill(Decimal.dZero)
 let regularUpgradeCost = new Array(regularUpgrades.length).fill(Decimal.dZero)
 
 function updateCollapse() {
-    ceramicGain = data.refineryValues[0].lt(baseRanges.pressure) ? Decimal.dZero : Decimal.sqrt(data.refineryValues[0].div(baseRanges.pressure))
+    ceramicGain = data.refineryValues[0].lt(calculatedRefineryValues.pressure) ? Decimal.dZero : Decimal.sqrt(data.refineryValues[0].div(calculatedRefineryValues.pressure))
     ceramicGain = data.funds.lt(1) ? Decimal.dZero :ceramicGain.times(Decimal.dOne.add(Decimal.log10(data.funds)))
 
     for(let i = 0; i < collapseUpgradeCost.length; i++) {
