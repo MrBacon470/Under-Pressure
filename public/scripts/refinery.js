@@ -77,7 +77,7 @@ function updateRefinery() {
 function calculateRefineryValues() {
     //Collapse Upgrade 1 Effects
     calculatedRefineryValues.pressure = data.collapseUpgrades[0].gt(0) ? baseRanges.pressure.times(D(1.5).times(data.collapseUpgrades[0])) : baseRanges.pressure
-    calculatedRefineryValues.temperatureRange[1] = data.collapseUpgrades[0].gt(0) ? baseRanges.temperature[1].times(D(1.5).times(data.collapseUpgrades[0])) : baseRanges.temperature[1]
+    calculatedRefineryValues.temperatureRange[1] = data.collapseUpgrades[0].gt(0) ? baseRanges.temperature[1].times(D(1.15).times(data.collapseUpgrades[0])) : baseRanges.temperature[1]
     calculatedRefineryValues.capacity = data.collapseUpgrades[0].gt(0) ? baseRanges.capacity.times(Decimal.dTwo.times(data.collapseUpgrades[0])) : baseRanges.capacity
     calculatedRefineryValues.integrity = data.collapseUpgrades[0].gt(0) ? baseRanges.integrity.times(D(2.5).times(data.collapseUpgrades[0])) : baseRanges.integrity
 
@@ -95,7 +95,7 @@ function updateRefineryHTML() {
     DOMCacheGetOrSet('distColumnProductionText').innerText = `Main Products\n\nNaptha: +${format(oilProductionDisplayValues[0])} L/s\nFuel Oil: +${format(oilProductionDisplayValues[1])} L/s\nMineral Oil: +${format(oilProductionDisplayValues[2])} L/s\n\n` +
     `Byproducts\nCoke: +${format(oilProductionDisplayValues[3])} kg/s\nResidual Gas: +${format(oilProductionDisplayValues[4])} L/s`
     DOMCacheGetOrSet('distColumnInfoText').innerText = `Refinery Temp: ${refineryInfoDisplayValues[0].gte(0) ? '+' : ''}${format(refineryInfoDisplayValues[0])}°K/s\n` + `Refinery Capacity: ${refineryInfoDisplayValues[1].gte(0) ? '+' : ''}${format(refineryInfoDisplayValues[1])} L/s\n`+
-    `Refinery Integrity: ${format((data.refineryValues[3].div(baseRanges.integrity)).times(100))}%`
+    `Refinery Integrity: ${format((data.refineryValues[3].div(calculatedRefineryValues.integrity)).times(100))}%`
     DOMCacheGetOrSet('distColumnWarningText').innerHTML = refineryWarningStr
 
     if(DOMCacheGetOrSet('distColImg').getAttribute('src') !== `images/distCol${Decimal.floor(data.collapseUpgrades[0]).toNumber()}.png`)

@@ -1,7 +1,7 @@
 const collapseUpgrades = [
     {
         name: 'Improve Distillation Column',
-        desc: '2x Base Refinery Capacity\n1.5x Max Pressure\n1.5x Max Perfect Temperature\n2.5x Refinery Integrity',
+        desc: '2x Base Refinery Capacity\n1.5x Max Pressure\n1.15x Max Perfect Temperature\n2.5x Refinery Integrity',
         baseCost: D(5),
         maxLevel: D(6)
     },
@@ -97,9 +97,15 @@ function collapse() {
     data.ceramic = data.ceramic.add(ceramicGain)
     data.funds = Decimal.dZero
     data.refineryValues = getDefaultData().refineryValues
+    data.refineryValues[3] = calculatedRefineryValues.integrity
     data.refineryToggles = getDefaultData().refineryToggles
     data.oilProducts = getDefaultData().oilProducts
     data.regularUpgrades = getDefaultData().regularUpgrades
+
+    for(let i = 0; i < data.refineryToggles.length; i++) {
+        DOMCacheGetOrSet(`refineryToggle${i}`).classList = data.refineryToggles[i] ? 'greenButton' : 'redButton'
+        DOMCacheGetOrSet(`refineryToggle${i}`).innerText = refineryToggleNames[i] + ( data.refineryToggles[i] ? ' [ON]' : ' [OFF]')
+    }
     
     if(!data.settingsToggles[0]) {
         createAlert('Your refinery collapsed!',`You've gained +${format(ceramicGain)} Cermaic but everything else has been reset`,'purple')
