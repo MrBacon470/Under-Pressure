@@ -23,6 +23,10 @@ function updateProcessingHTML() {
     if(data.currentTab !== 1) return
 
     DOMCacheGetOrSet('productionAmountButton').innerText = `Amount Used for Production: ${resourceSellAmts.names[data.buyAmount[1]]}`
+    DOMCacheGetOrSet(`crackingHolder0`).style.display = data.collapseUpgrades[2].gte(1) ? 'flex' : 'none'
+    
+    DOMCacheGetOrSet(`productionHolder0`).style.display = data.collapseUpgrades[1].gte(1) ? 'flex' : 'none'
+    DOMCacheGetOrSet(`productionHolder1`).style.display = data.collapseUpgrades[4].gte(1) ? 'flex' : 'none'
 
     updateCrackingButtonHTML()
     updateProductionButtonHTML()

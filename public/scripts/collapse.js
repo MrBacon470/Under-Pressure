@@ -7,7 +7,7 @@ const collapseUpgrades = [
     },
     {
         name: 'Asphalt Production',
-        desc: 'Learn the Process to turn Coke & Naptha into Asphalt',
+        desc: 'Learn the Process to turn Coke & Naptha into Asphalt\nUNLOCKS THE PROCESSING TAB',
         baseCost: D(1),
         maxLevel: Decimal.dOne
     },

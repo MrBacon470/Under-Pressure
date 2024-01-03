@@ -89,6 +89,7 @@ function updateGame() {
     updateShipping()
     updateCollapse()
     //Global HTML Updates
+    DOMCacheGetOrSet('navButton1').style.display = data.collapseUpgrades[1].gte(1) ? 'block' : 'none'
     DOMCacheGetOrSet('navButton3').style.display = data.hasCollapsed ? 'block' : 'none'
     
     DOMCacheGetOrSet('pressureInfoText').innerText = `Refinery Pressure: ${format(data.refineryValues[0])}/${format(calculatedRefineryValues.pressure)} mmHg`
