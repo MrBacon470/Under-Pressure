@@ -23,12 +23,18 @@ const collapseUpgrades = [
         baseCost: D(25),
         maxLevel: Decimal.dOne
     },
+    {
+        name: 'Plastics',
+        desc: 'Turn your Naptha into Plastic Bars',
+        baseCost: D(30),
+        maxLevel: Decimal.dOne
+    }
 ]
 
 const regularUpgrades = [
     {
         name: 'Improve Column Heater',
-        desc: '^1.15 Heat/s',
+        desc: 'x1.15 Heat/s',
         baseCost: D(1000),
         maxLevel: Decimal.dTen
     },
@@ -43,6 +49,12 @@ const regularUpgrades = [
         desc: 'x1.50 Oil Processing/s',
         baseCost: D(1e4),
         maxLevel: D(5)
+    },
+    {
+        name: '1.5x Market Cap Modifier',
+        desc: 'Multiplies the Maximum Cap to the Market Modifier',
+        baseCost: D(5e4),
+        maxLevel: D(5)
     }
 ]
 const upgradeScaleRate = [1.5,1.25]
@@ -51,8 +63,8 @@ let collapseUpgradeCost = new Array(collapseUpgrades.length).fill(Decimal.dZero)
 let regularUpgradeCost = new Array(regularUpgrades.length).fill(Decimal.dZero)
 
 function updateCollapse() {
-    ceramicGain = data.refineryValues[0].lt(calculatedRefineryValues.pressure) ? Decimal.dZero : Decimal.sqrt(data.refineryValues[0].div(calculatedRefineryValues.pressure))
-    ceramicGain = data.funds.lt(1) ? Decimal.dZero :ceramicGain.times(Decimal.dOne.add(Decimal.log10(data.funds)))
+    ceramicGain = data.refineryValues[0].lt(baseRanges.pressure) ? Decimal.dZero : Decimal.sqrt(data.refineryValues[0].div(baseRanges.pressure))
+    ceramicGain = data.funds.lt(1) ? ceramicGain :ceramicGain.times(Decimal.dOne.add(Decimal.log10(data.funds)))
 
     for(let i = 0; i < collapseUpgradeCost.length; i++) {
         collapseUpgradeCost[i] = collapseUpgrades[i].baseCost.times(Decimal.pow(upgradeScaleRate[0],data.collapseUpgrades[i]))
@@ -73,7 +85,7 @@ function updateCollapseHTML() {
     for(let i = 0; i < collapseUpgrades.length; i++) {
         if(data.collapseUpgrades[i].lt(collapseUpgrades[i].maxLevel)) {
             DOMCacheGetOrSet(`collapseUpgrade${i}`).innerText = `${collapseUpgrades[i].name}\n${collapseUpgrades[i].desc}\nCost: ${format(collapseUpgradeCost[i])} Ceramic\nLevel: ${data.collapseUpgrades[i].toFixed(0)}/${collapseUpgrades[i].maxLevel}`
-            DOMCacheGetOrSet(`collapseUpgrade${i}`).classList = data.ceramic.lt(collapseUpgrades[i].baseCost) ? 'redButton' : 'greenButton'
+            DOMCacheGetOrSet(`collapseUpgrade${i}`).classList = data.ceramic.lt(collapseUpgradeCost[i]) ? 'redButton' : 'greenButton'
         }
         else {
             DOMCacheGetOrSet(`collapseUpgrade${i}`).innerText = `${collapseUpgrades[i].name}\n${collapseUpgrades[i].desc}\n[MAX LEVEL]`
@@ -83,7 +95,7 @@ function updateCollapseHTML() {
     for(let i = 0; i < regularUpgrades.length; i++) { 
         if(data.regularUpgrades[i].lt(regularUpgrades[i].maxLevel)) {
             DOMCacheGetOrSet(`regularUpgrade${i}`).innerText = `${regularUpgrades[i].name}\n${regularUpgrades[i].desc}\nCost: $${format(regularUpgradeCost[i])}\nLevel: ${data.regularUpgrades[i].toFixed(0)}/${regularUpgrades[i].maxLevel}`
-            DOMCacheGetOrSet(`regularUpgrade${i}`).classList = data.funds.lt(regularUpgrades[i].baseCost) ? 'redButton' : 'greenButton'
+            DOMCacheGetOrSet(`regularUpgrade${i}`).classList = data.funds.lt(regularUpgradeCost[i]) ? 'redButton' : 'greenButton'
         }
         else {
             DOMCacheGetOrSet(`regularUpgrade${i}`).innerText = `${regularUpgrades[i].name}\n${regularUpgrades[i].desc}\n[MAX LEVEL]`

@@ -54,6 +54,15 @@ function initGame() {
         DOMCacheGetOrSet(`refineryToggle${i}`).addEventListener('click',() => updateRefineryToggle(i))
     }
     //Processing Tab
+    DOMCacheGetOrSet(`productionAmountButton`).addEventListener('click',() => {
+        data.buyAmount[1] = data.buyAmount[1] + 1 < 4 ? data.buyAmount[1] + 1 : 0 
+    })
+    for(let i = 0; i < crackingRecipes.length; i++) {
+        DOMCacheGetOrSet(`crackingButton${i}`).addEventListener('click', () => crackResource(i))
+    }
+    for(let i = 0; i < productionRecipes.length; i++) {
+        DOMCacheGetOrSet(`productionButton${i}`).addEventListener('click', () => produceResource(i))
+    }
     //Shipping Tab
     DOMCacheGetOrSet(`resourceSellAmountButton`).addEventListener('click',() => {
         data.buyAmount[0] = data.buyAmount[0] + 1 < 4 ? data.buyAmount[0] + 1 : 0 
@@ -75,13 +84,15 @@ function updateGame() {
     data.time = Date.now()
     // Information Updates
     calculateRefineryValues()
+    calculateProcessingAmounts()
     updateRefinery()
     updateShipping()
     updateCollapse()
     //Global HTML Updates
     DOMCacheGetOrSet('navButton3').style.display = data.hasCollapsed ? 'block' : 'none'
     
-    DOMCacheGetOrSet('pressureInfoText').innerText = `Refinery Pressure: ${format(data.refineryValues[0])} mmHg`
+    DOMCacheGetOrSet('pressureInfoText').innerText = `Refinery Pressure: ${format(data.refineryValues[0])}/${format(calculatedRefineryValues.pressure)} mmHg`
+    DOMCacheGetOrSet('pressureInfoText').classList = data.refineryValues[0].gt(calculatedRefineryValues.pressure) ? 'redText' : ''
     DOMCacheGetOrSet('heatInfoText').innerText = `Refinery Temp: ${format(data.refineryValues[1])}°K`
     DOMCacheGetOrSet('capacityInfoText').innerText = `Refinery Capacity: ${format(data.refineryValues[2])}/${format(calculatedRefineryValues.capacity)} L`
     DOMCacheGetOrSet('moneyInfoText').innerText = `Funds: $${format(data.funds)}`
@@ -93,11 +104,13 @@ function updateGame() {
     updateRefineryHTML()
     updateShippingHTML()
     updateCollapseHTML()
+    updateProcessingHTML()
 }
 
 function calculateOfflineProgress() {
     diff = (Date.now() - data.time) / 1000
     generateNotification(`Welcome Back\nYou were gone for: ${formatTimeAlternate(diff)}`,'info')
+    data.time = Date.now()
 }
 
 function switchTab(id) {

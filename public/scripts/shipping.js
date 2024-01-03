@@ -1,4 +1,5 @@
 const baseResourceCosts = [D(25),D(40),D(80),D(10),D(5)]
+const refinedResourceCosts = [D(40),D(60)]
 
 const resourceSellAmts = {
     names: ['10%','25%','50%','100%'],
@@ -8,20 +9,17 @@ const resourceSellAmts = {
 let currentSaleMultiplier = Decimal.dOne
 let previousSaleMultiplier = Decimal.dOne
 let multiplierCounter = 0
-
+let marketCapValue = D(5)
 function updateShipping() {
+    marketCapValue = data.regularUpgrades[3].gt(0) ? D(5).times(D(1.5).times(data.regularUpgrades[3])) : D(5)
     multiplierCounter += diff
     if(multiplierCounter >= 10) {
         previousSaleMultiplier = currentSaleMultiplier;
         let changeAmt = getRandomArbitrary(0,6)
         changeAmt *= Math.random() <= 0.5 ? -1 : 1
         currentSaleMultiplier = currentSaleMultiplier.add(changeAmt)
-        if(currentSaleMultiplier.lt(0.25)) {
-            currentSaleMultiplier = D(0.25)
-        }
-        if(currentSaleMultiplier.gt(5)) {
-            currentSaleMultiplier = D(5)
-        }
+        currentSaleMultiplier = Decimal.max(currentSaleMultiplier,D(0.25))
+        currentSaleMultiplier = Decimal.min(currentSaleMultiplier,marketCapValue)
         multiplierCounter = 0
     }
 }
@@ -35,23 +33,31 @@ function updateShippingHTML() {
     DOMCacheGetOrSet(`cokeInfoText`).innerText = `Coke: ${format(data.oilProducts[3])} kg`
     DOMCacheGetOrSet(`residualGasInfoText`).innerText = `Residual Gas: ${format(data.oilProducts[4])} L`
 
+    DOMCacheGetOrSet(`asphaltInfoText`).innerText = `Asphalt: ${format(data.refinedProducts[0])} L`
+    DOMCacheGetOrSet(`plasticInfoText`).innerText = `Plastic: ${format(data.refinedProducts[1])} kg`
+
     DOMCacheGetOrSet(`napthaSellButton`).innerText = `Sell Naptha: $${format((data.oilProducts[0].times(resourceSellAmts.values[data.buyAmount[0]])).times(baseResourceCosts[0].times(currentSaleMultiplier)))}`
     DOMCacheGetOrSet(`fuelOilSellButton`).innerText = `Sell Fuel Oil: $${format((data.oilProducts[1].times(resourceSellAmts.values[data.buyAmount[0]])).times(baseResourceCosts[1].times(currentSaleMultiplier)))}`
     DOMCacheGetOrSet(`mineralOilSellButton`).innerText = `Sell Mineral Oil: $${format((data.oilProducts[2].times(resourceSellAmts.values[data.buyAmount[0]])).times(baseResourceCosts[2].times(currentSaleMultiplier)))}`
     DOMCacheGetOrSet(`cokeSellButton`).innerText = `Sell Coke: $${format((data.oilProducts[3].times(resourceSellAmts.values[data.buyAmount[0]])).times(baseResourceCosts[3].times(currentSaleMultiplier)))}`
     DOMCacheGetOrSet(`residualGasSellButton`).innerText = `Sell Residual Gas: $${format((data.oilProducts[4].times(resourceSellAmts.values[data.buyAmount[0]])).times(baseResourceCosts[4].times(currentSaleMultiplier)))}`
 
+    DOMCacheGetOrSet(`asphaltSellButton`).innerText = `Sell Asphalt: $${format((data.refinedProducts[0].times(resourceSellAmts.values[data.buyAmount[0]])).times(refinedResourceCosts[0].times(currentSaleMultiplier)))}`
+    DOMCacheGetOrSet(`plasticSellButton`).innerText = `Sell Plastic: $${format((data.refinedProducts[1].times(resourceSellAmts.values[data.buyAmount[0]])).times(refinedResourceCosts[1].times(currentSaleMultiplier)))}`
+
     DOMCacheGetOrSet(`resourceSellAmountButton`).innerText = `Sell Amount: ${resourceSellAmts.names[data.buyAmount[0]]}`
 
     if(currentSaleMultiplier.eq(previousSaleMultiplier)) {
         DOMCacheGetOrSet(`resourceSellModifierText`).classList = ''
         DOMCacheGetOrSet(`resourceSellModifierText`).innerText = `Market Value Modifer: x${format(currentSaleMultiplier)} to Resource Sale Price` +
-        `\n[+0.00x] | Time to Update: ${formatTime(10-multiplierCounter)}`
+        `\n[+0.00x] | Time to Update: ${formatTime(10-multiplierCounter)}` +
+        `\nMarket Cap: x${format(marketCapValue)}`
     }
     else {
         DOMCacheGetOrSet(`resourceSellModifierText`).classList = previousSaleMultiplier.lt(currentSaleMultiplier) ? 'greenText' : 'redText'
         DOMCacheGetOrSet(`resourceSellModifierText`).innerText = `Market Value Modifer: x${format(currentSaleMultiplier)} to Resource Sale Price` +
-        `\n[${currentSaleMultiplier.sub(previousSaleMultiplier).gt(0) ? '+':''}${format(currentSaleMultiplier.sub(previousSaleMultiplier))}] | Time to Update: ${formatTime(10-multiplierCounter)}`
+        `\n[${currentSaleMultiplier.sub(previousSaleMultiplier).gt(0) ? '+':''}${format(currentSaleMultiplier.sub(previousSaleMultiplier))}] | Time to Update: ${formatTime(10-multiplierCounter)}` +
+        `\nMarket Cap: x${format(marketCapValue)}`
     }
 }
 

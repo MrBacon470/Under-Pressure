@@ -82,7 +82,7 @@ function calculateRefineryValues() {
     calculatedRefineryValues.integrity = data.collapseUpgrades[0].gt(0) ? baseRanges.integrity.times(D(2.5).times(data.collapseUpgrades[0])) : baseRanges.integrity
 
     //Regular Upgrade 1 Effect
-    calculatedRefineryValues.heaterRate = baseProductionValues.temperature.times(Decimal.pow(1.15,data.regularUpgrades[0]))
+    calculatedRefineryValues.heaterRate = data.regularUpgrades[0].gt(0) ? baseProductionValues.temperature.times(D(1.15).times(data.regularUpgrades[0])) : baseProductionValues.temperature
     //Regular Upgrade 2 Effect
     calculatedRefineryValues.oilFeedRate = baseProductionValues.oilFeed.times(Decimal.pow(1.25,data.regularUpgrades[1]))
     //Regular Upgrade 3 Effect
