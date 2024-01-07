@@ -21,6 +21,11 @@ const tabData = [
         subtabs: []
     },
     {
+        name: 'Achievements',
+        color: '',
+        subtabs: []
+    },
+    {
         name: 'Settings',
         color: '',
         subtabs: []
@@ -47,6 +52,7 @@ function initGame() {
         addHTML('regularUpgradesHolder',`<button id="regularUpgrade${i}">Regular Upgrade ${i}</button>`)
         DOMCacheGetOrSet(`regularUpgrade${i}`).addEventListener('click', () => purchaseRegularUpgrade(i))
     }
+    generateAchievements()
     //Refinery Tab
     for(let i = 0; i < data.refineryToggles.length; i++) {
         DOMCacheGetOrSet(`refineryToggle${i}`).classList = data.refineryToggles[i] ? 'greenButton' : 'redButton'
@@ -72,6 +78,10 @@ function initGame() {
     DOMCacheGetOrSet(`mineralOilSellButton`).addEventListener('click', () => sellResource(2))
     DOMCacheGetOrSet(`cokeSellButton`).addEventListener('click', () => sellResource(3))
     DOMCacheGetOrSet(`residualGasSellButton`).addEventListener('click', () => sellResource(4))
+    // Achievements Tab
+    for(let i = 0; i < data.achievements.length; i++) {
+        DOMCacheGetOrSet(`achievement${i}`).addEventListener('mouseover', () => achievementHover(i))
+    }
     //Settings Tab
     DOMCacheGetOrSet('saveButton').addEventListener('click', () => save())
     DOMCacheGetOrSet('exportButton').addEventListener('click',() => exportSave())

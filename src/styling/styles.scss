@@ -63,6 +63,14 @@ $fonts-bold: 'Neon Bold';
     h2 {color: $color;}
 }
 
+@mixin baseAchievementStyle($color) {
+    height: 2em;
+    width: 2em;
+    margin: .25em;
+    padding: 2px;
+    border-color: $color;
+}
+
 /* Root Vars & Global Styling */
 
 * {
@@ -185,6 +193,10 @@ button.selected {@include standardButtonHover()}
         width: 100%;
     }
 }
+
+.achLock {@include baseAchievementStyle(map-get($colors, 'red'))}
+.achUnlock {@include baseAchievementStyle(map-get($colors, 'green'))}
+.achPlaceholder {@include baseAchievementStyle($text-color); border: 2px solid; border-radius: 5px;}
 
 .modalContainer {@include modalContainer()}
 
