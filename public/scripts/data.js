@@ -10,7 +10,7 @@ function getDefaultData() {
         refineryToggles: new Array(2).fill(false),
         regularUpgrades: new Array(5).fill(Decimal.dZero),
         collapseUpgrades: new Array(5).fill(Decimal.dZero),
-        achievements: new Array(5).fill(false),
+        achievements: new Array(20).fill(false),
         buyAmount: new Array(2).fill(0),
         settingsToggles: new Array(1).fill(false),
         currentTab: 0,

@@ -98,6 +98,7 @@ function updateGame() {
     updateRefinery()
     updateShipping()
     updateCollapse()
+    checkAchievements()
     //Global HTML Updates
     DOMCacheGetOrSet('navButton1').style.display = data.collapseUpgrades[1].gte(1) ? 'block' : 'none'
     DOMCacheGetOrSet('navButton3').style.display = data.hasCollapsed ? 'block' : 'none'
@@ -116,6 +117,7 @@ function updateGame() {
     updateShippingHTML()
     updateCollapseHTML()
     updateProcessingHTML()
+    updateAchievementHTML()
 }
 
 function calculateOfflineProgress() {
