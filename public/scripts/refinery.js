@@ -29,7 +29,6 @@ let refineryWarningStr = ''
 let refineryInfoDisplayValues = new Array(2).fill(Decimal.dZero)
 let oilProductionDisplayValues = new Array(5).fill(Decimal.dZero)
 
-
 function updateRefinery() {
     if(data.refineryToggles[0]) {
         data.refineryValues[1] = data.refineryValues[1].add(calculatedRefineryValues.heaterRate.times(diff))
@@ -102,6 +101,9 @@ function updateRefineryHTML() {
         DOMCacheGetOrSet('distColImg').setAttribute('src', `images/distCol${Decimal.floor(data.collapseUpgrades[0]).toNumber()}.png`)
     DOMCacheGetOrSet('distColTitle').innerText = `${distColumnNames[Decimal.floor(data.collapseUpgrades[0]).toNumber()]} Distillation Column`
     DOMCacheGetOrSet('distColTitle').classList = Decimal.floor(data.collapseUpgrades[0]).toNumber() > 0 ? `${distColumnColors[Decimal.floor(data.collapseUpgrades[0]).toNumber()-1]}Text` : '' 
+    DOMCacheGetOrSet('smartHeaterHolder').style.display = data.collapseUpgrades[3].gt(0) ? 'block' : 'none'
+    DOMCacheGetOrSet('autoTog0').classList = data.automationToggle[0] ? 'greenButton' : 'redButton'
+    DOMCacheGetOrSet('autoTog0').innerText = automationToggleNames[0] + ` ${data.automationToggle[0] ? '[ON]' : '[OFF]'}`
 }
 
 function generateRefineryWarning() {
@@ -118,7 +120,9 @@ function generateRefineryWarning() {
     if(data.refineryValues[1].lt(373.15)) {
         refineryWarningStr += '<span class="yellowText">[WARNING]</span> Refinery Temp below Crude Oil Processing Temp (373.15°K)<br>'
     }
-
+    if(!data.automationToggle[0]) {
+        refineryWarningStr += '<span class="yellowText">[WARNING]</span> Smart Heater Active - Display Values may be inaccurate<br>'
+    }
     if(data.refineryValues[2].gte(calculatedRefineryValues.capacity.times(0.90)))
         refineryWarningStr += '<span class="yellowText">[WARNING]</span> Refinery Capacity at ≥90% of Max Capacity<br>'
     if(data.refineryValues[2].gte(calculatedRefineryValues.capacity))
@@ -181,4 +185,13 @@ function processOil(amt) {
         oilProductionDisplayValues[4] = amt.times(0.4)
     }
     data.refineryValues[2] = data.refineryValues[2].sub(amt)
+}
+
+function runSmartHeater() {
+    if(data.collapseUpgrades[3].lte(0) || !data.automationToggle[0]) return
+    const tempIncrement = calculatedRefineryValues.heaterRate.times(diff)
+    if(data.refineryValues[1].lt(data.smartHeaterRange[0]) || data.refineryValues[1].lt(data.smartHeaterRange[1])) {
+        if((data.refineryValues[1].add(tempIncrement)).gt(data.smartHeaterRange[1])) return
+        data.refineryValues[1] = data.refineryValues[1].add(tempIncrement)
+    }
 }

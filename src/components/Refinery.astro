@@ -17,6 +17,16 @@
             <h3>Column Controls & Production</h3>
             <button id="refineryToggle0">Heat Distillation Column [OFF]</button>
             <button id="refineryToggle1">Crude Oil Feed [OFF]</button>
+            <div id="smartHeaterHolder">
+                <button id="autoTog0">Smart Heater [OFF]</button>
+                <div class="flexRowWrap">
+                    <label for="lowValueInput">Min Value:</label>
+                    <input id="lowValueInput" type="number">
+                    <label for="highValueInput">Max Value:</label>
+                    <input id="highValueInput" type="number">
+                </div>
+                <p>Default Values: Low 600K, High 700K</p>
+            </div>
             <p id="distColumnProductionText">
 
             </p>

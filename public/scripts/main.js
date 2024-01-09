@@ -31,6 +31,8 @@ const tabData = [
         subtabs: []
     }
 ]
+const settingsToggleNames = ['Collapse Alert']
+const automationToggleNames = ['Smart Heater']
 // 10-40 mmHG (torr) is ideal pressure (Too Low or Too High Damages Refinery Column)
 // 370-380C is ideal temperature (Too Low or Too High Produces Coke or Residual Gas Byproducts)
 function initGame() {
@@ -59,6 +61,8 @@ function initGame() {
         DOMCacheGetOrSet(`refineryToggle${i}`).innerText = refineryToggleNames[i] + ( data.refineryToggles[i] ? ' [ON]' : ' [OFF]')
         DOMCacheGetOrSet(`refineryToggle${i}`).addEventListener('click',() => updateRefineryToggle(i))
     }
+    DOMCacheGetOrSet('lowValueInput').addEventListener('input',(evt) => {data.smartHeaterRange[0] = D(DOMCacheGetOrSet('lowValueInput').value)})
+    DOMCacheGetOrSet('highValueInput').addEventListener('input',(evt) => {data.smartHeaterRange[1] = D(DOMCacheGetOrSet('highValueInput').value)})
     //Processing Tab
     DOMCacheGetOrSet(`productionAmountButton`).addEventListener('click',() => {
         data.buyAmount[1] = data.buyAmount[1] + 1 < 4 ? data.buyAmount[1] + 1 : 0 
@@ -83,6 +87,12 @@ function initGame() {
         DOMCacheGetOrSet(`achievement${i}`).addEventListener('mouseover', () => achievementHover(i))
     }
     //Settings Tab
+    for(let i = 0; i < data.settingsToggles.length; i++) {
+        DOMCacheGetOrSet(`setTog${i}`).addEventListener('click', () => {data.settingsToggles[i] = !data.settingsToggles[i]})
+    }
+    for(let i = 0; i < data.automationToggle.length; i++) {
+        DOMCacheGetOrSet(`autoTog${i}`).addEventListener('click', () => {data.automationToggle[i] = !data.automationToggle[i]})
+    }
     DOMCacheGetOrSet('saveButton').addEventListener('click', () => save())
     DOMCacheGetOrSet('exportButton').addEventListener('click',() => exportSave())
     DOMCacheGetOrSet('importButton').addEventListener('click', () => createInput('Import Save Data',"",importSave))
@@ -98,6 +108,7 @@ function updateGame() {
     updateRefinery()
     updateShipping()
     updateCollapse()
+    runSmartHeater()
     checkAchievements()
     //Global HTML Updates
     DOMCacheGetOrSet('navButton1').style.display = data.collapseUpgrades[1].gte(1) ? 'block' : 'none'
@@ -118,6 +129,12 @@ function updateGame() {
     updateCollapseHTML()
     updateProcessingHTML()
     updateAchievementHTML()
+    if(data.currentTab === 5) {
+        for(let i = 0; i < data.settingsToggles.length; i++) {
+            DOMCacheGetOrSet(`setTog${i}`).innerText = settingsToggleNames + ` ${data.settingsToggles[i] ? '[ON]' : '[OFF]'}`
+            DOMCacheGetOrSet(`setTog${i}`).classList = data.settingsToggles[i] ? 'greenButton' : 'redButton'
+        }
+    }
 }
 
 function calculateOfflineProgress() {

@@ -10,12 +10,14 @@ function getDefaultData() {
         refineryToggles: new Array(2).fill(false),
         regularUpgrades: new Array(5).fill(Decimal.dZero),
         collapseUpgrades: new Array(5).fill(Decimal.dZero),
+        smartHeaterRange: [D(600),D(700)],
         achievements: new Array(20).fill(false),
         buyAmount: new Array(2).fill(0),
-        settingsToggles: new Array(1).fill(false),
+        automationToggle: new Array(1).fill(false),
+        settingsToggles: new Array(1).fill(true),
         currentTab: 0,
         time: Date.now(),
-        currentVersion: 'v0.0.0'
+        currentVersion: 'v1.0.0'
     }
 }
 

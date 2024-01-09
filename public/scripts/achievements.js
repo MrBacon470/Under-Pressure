@@ -68,8 +68,8 @@ const achievements = [
     {
         name: 'Advancements Galore',
         desc: 'Get the 3rd distillation column upgrade',
-        img: 'images/distCol4.png',
-        condition: () => data.collapseUpgrades[0].gte(4)
+        img: 'images/distCol3.png',
+        condition: () => data.collapseUpgrades[0].gte(3)
     },
     {
         name: 'Ultimate...',
