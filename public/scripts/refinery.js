@@ -120,7 +120,7 @@ function generateRefineryWarning() {
     if(data.refineryValues[1].lt(373.15)) {
         refineryWarningStr += '<span class="yellowText">[WARNING]</span> Refinery Temp below Crude Oil Processing Temp (373.15°K)<br>'
     }
-    if(!data.automationToggle[0]) {
+    if(data.automationToggle[0]) {
         refineryWarningStr += '<span class="yellowText">[WARNING]</span> Smart Heater Active - Display Values may be inaccurate<br>'
     }
     if(data.refineryValues[2].gte(calculatedRefineryValues.capacity.times(0.90)))
