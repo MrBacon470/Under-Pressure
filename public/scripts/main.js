@@ -82,6 +82,9 @@ function initGame() {
     DOMCacheGetOrSet(`mineralOilSellButton`).addEventListener('click', () => sellResource(2))
     DOMCacheGetOrSet(`cokeSellButton`).addEventListener('click', () => sellResource(3))
     DOMCacheGetOrSet(`residualGasSellButton`).addEventListener('click', () => sellResource(4))
+
+    DOMCacheGetOrSet(`asphaltSellButton`).addEventListener('click', () => sellRefined(0))
+    DOMCacheGetOrSet(`plasticSellButton`).addEventListener('click', () => sellRefined(1))
     // Achievements Tab
     for(let i = 0; i < data.achievements.length; i++) {
         DOMCacheGetOrSet(`achievement${i}`).addEventListener('mouseover', () => achievementHover(i))

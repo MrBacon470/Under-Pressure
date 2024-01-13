@@ -72,3 +72,15 @@ function sellResource(id) {
         data.oilProducts[id] = data.oilProducts[id].sub(data.oilProducts[id].times(resourceSellAmts.values[data.buyAmount[0]]))
     }
 }
+
+function sellRefined(id) {
+    if(data.refinedProducts[id].eq(0)) return
+    if(data.refinedProducts[id].lte(0.1)) {
+        data.funds = data.funds.add((data.refinedProducts[id]).times(refinedResourceCosts[id].times(currentSaleMultiplier)))
+        data.refinedProducts[id] = D(0)
+    }
+    else {
+        data.funds = data.funds.add((data.refinedProducts[id].times(resourceSellAmts.values[data.buyAmount[0]])).times(refinedResourceCosts[id].times(currentSaleMultiplier)))
+        data.refinedProducts[id] = data.refinedProducts[id].sub(data.refinedProducts[id].times(resourceSellAmts.values[data.buyAmount[0]]))
+    }
+}

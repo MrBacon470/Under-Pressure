@@ -17,7 +17,7 @@ function getDefaultData() {
         settingsToggles: new Array(1).fill(true),
         currentTab: 0,
         time: Date.now(),
-        currentVersion: 'v1.0.0'
+        currentVersion: 'v1.0.1'
     }
 }
 
