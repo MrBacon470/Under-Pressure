@@ -74,7 +74,7 @@ function produceResource(id) {
     switch(id) {
         case 0: // Coke + Naptha -> Asphalt
             data.oilProducts[3] = data.oilProducts[3].sub(productionRecipes[0].input[0].times(count))
-            data.oilProducts[0] = data.oilProducts[0].sub(productionRecipes[0].input[0].times(count))
+            data.oilProducts[0] = data.oilProducts[0].sub(productionRecipes[0].input[1].times(count))
             data.refinedProducts[0] = data.refinedProducts[0].add(productionRecipes[0].output[0].times(count))
             break
         case 1: // Naptha -> Plastic
