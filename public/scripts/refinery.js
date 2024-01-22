@@ -28,13 +28,14 @@ let calculatedRefineryValues = {
 let refineryWarningStr = ''
 let refineryInfoDisplayValues = new Array(2).fill(Decimal.dZero)
 let oilProductionDisplayValues = new Array(5).fill(Decimal.dZero)
+let smartHeaterHeatingFlag = false
 
 function updateRefinery() {
     if(data.refineryToggles[0]) {
         data.refineryValues[1] = data.refineryValues[1].add(calculatedRefineryValues.heaterRate.times(diff))
         refineryInfoDisplayValues[0] = calculatedRefineryValues.heaterRate
     }
-    else if(!data.refineryToggles[0] && data.refineryValues[1].gt(273.15)) {
+    else if(!data.refineryToggles[0] && data.refineryValues[1].gt(273.15) && !smartHeaterHeatingFlag) {
         refineryInfoDisplayValues[0] = data.refineryValues[1].times(-0.01)
         data.refineryValues[1] = data.refineryValues[1].sub((data.refineryValues[1].times(0.01)).times(diff))
         if(data.refineryValues[1].lt(273.15)) {
@@ -71,6 +72,8 @@ function updateRefinery() {
             data.refineryValues[3] = Decimal.dZero
         }
     }
+
+    smartHeaterHeatingFlag = data.refineryValues[1].lt(data.smartHeaterValue) && data.automationToggle[0]
 }
 
 function calculateRefineryValues() {
@@ -93,7 +96,7 @@ function updateRefineryHTML() {
     generateRefineryWarning()
     DOMCacheGetOrSet('distColumnProductionText').innerText = `Main Products\n\nNaptha: +${format(oilProductionDisplayValues[0])} L/s\nFuel Oil: +${format(oilProductionDisplayValues[1])} L/s\nMineral Oil: +${format(oilProductionDisplayValues[2])} L/s\n\n` +
     `Byproducts\nCoke: +${format(oilProductionDisplayValues[3])} kg/s\nResidual Gas: +${format(oilProductionDisplayValues[4])} L/s`
-    DOMCacheGetOrSet('distColumnInfoText').innerText = `Refinery Temp: ${refineryInfoDisplayValues[0].gte(0) ? '+' : ''}${format(refineryInfoDisplayValues[0])}°K/s\n` + `Refinery Capacity: ${refineryInfoDisplayValues[1].gte(0) ? '+' : ''}${format(refineryInfoDisplayValues[1])} L/s\n`+
+    DOMCacheGetOrSet('distColumnInfoText').innerText = `Refinery Temp: ${refineryInfoDisplayValues[0].gte(0) ? '+' : ''}${format(refineryInfoDisplayValues[0])}K/s\n` + `Refinery Capacity: ${refineryInfoDisplayValues[1].gte(0) ? '+' : ''}${format(refineryInfoDisplayValues[1])} L/s\n`+
     `Refinery Integrity: ${format((data.refineryValues[3].div(calculatedRefineryValues.integrity)).times(100))}%`
     DOMCacheGetOrSet('distColumnWarningText').innerHTML = refineryWarningStr
 
@@ -119,9 +122,6 @@ function generateRefineryWarning() {
     }
     if(data.refineryValues[1].lt(373.15)) {
         refineryWarningStr += '<span class="yellowText">[WARNING]</span> Refinery Temp below Crude Oil Processing Temp (373.15°K)<br>'
-    }
-    if(data.automationToggle[0]) {
-        refineryWarningStr += '<span class="yellowText">[WARNING]</span> Smart Heater Active - Display Values may be inaccurate<br>'
     }
     if(data.refineryValues[2].gte(calculatedRefineryValues.capacity.times(0.90)))
         refineryWarningStr += '<span class="yellowText">[WARNING]</span> Refinery Capacity at ≥90% of Max Capacity<br>'
@@ -189,9 +189,8 @@ function processOil(amt) {
 
 function runSmartHeater() {
     if(data.collapseUpgrades[3].lte(0) || !data.automationToggle[0]) return
-    const tempIncrement = calculatedRefineryValues.heaterRate.times(diff)
-    if(data.refineryValues[1].lt(data.smartHeaterRange[0]) || data.refineryValues[1].lt(data.smartHeaterRange[1])) {
-        if((data.refineryValues[1].add(tempIncrement)).gt(data.smartHeaterRange[1])) return
-        data.refineryValues[1] = data.refineryValues[1].add(tempIncrement)
+    if(data.refineryValues[1].lt(data.smartHeaterValue)) {
+        if((data.refineryValues[1].add(calculatedRefineryValues.heaterRate.times(diff))).gt(data.smartHeaterValue)) return
+        data.refineryValues[1] = data.refineryValues[1].add(calculatedRefineryValues.heaterRate.times(diff))
     }
 }

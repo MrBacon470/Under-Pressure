@@ -31,6 +31,7 @@ const tabData = [
         subtabs: []
     }
 ]
+const helpInformation = []
 const settingsToggleNames = ['Collapse Alert']
 const automationToggleNames = ['Smart Heater']
 // 10-40 mmHG (torr) is ideal pressure (Too Low or Too High Damages Refinery Column)
@@ -61,8 +62,7 @@ function initGame() {
         DOMCacheGetOrSet(`refineryToggle${i}`).innerText = refineryToggleNames[i] + ( data.refineryToggles[i] ? ' [ON]' : ' [OFF]')
         DOMCacheGetOrSet(`refineryToggle${i}`).addEventListener('click',() => updateRefineryToggle(i))
     }
-    DOMCacheGetOrSet('lowValueInput').addEventListener('input',(evt) => {data.smartHeaterRange[0] = D(DOMCacheGetOrSet('lowValueInput').value)})
-    DOMCacheGetOrSet('highValueInput').addEventListener('input',(evt) => {data.smartHeaterRange[1] = D(DOMCacheGetOrSet('highValueInput').value)})
+    DOMCacheGetOrSet('valueInput').addEventListener('input',(evt) => {data.smartHeaterValue = D(DOMCacheGetOrSet('valueInput').value)})
     //Processing Tab
     DOMCacheGetOrSet(`productionAmountButton`).addEventListener('click',() => {
         data.buyAmount[1] = data.buyAmount[1] + 1 < 4 ? data.buyAmount[1] + 1 : 0 
@@ -119,7 +119,7 @@ function updateGame() {
     
     DOMCacheGetOrSet('pressureInfoText').innerText = `Refinery Pressure: ${format(data.refineryValues[0])}/${format(calculatedRefineryValues.pressure)} mmHg`
     DOMCacheGetOrSet('pressureInfoText').classList = data.refineryValues[0].gt(calculatedRefineryValues.pressure) ? 'redText' : ''
-    DOMCacheGetOrSet('heatInfoText').innerText = `Refinery Temp: ${format(data.refineryValues[1])}°K`
+    DOMCacheGetOrSet('heatInfoText').innerText = `Refinery Temp: ${format(data.refineryValues[1])}K`
     DOMCacheGetOrSet('capacityInfoText').innerText = `Refinery Capacity: ${format(data.refineryValues[2])}/${format(calculatedRefineryValues.capacity)} L`
     DOMCacheGetOrSet('moneyInfoText').innerText = `Funds: $${format(data.funds)}`
 

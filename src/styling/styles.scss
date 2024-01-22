@@ -196,6 +196,19 @@ button.selected {@include standardButtonHover()}
     }
 }
 
+.tabContent {
+    position: relative;
+}
+
+.helpButton {
+    margin: 1vh 1vw 1vh 1vw;
+    height: 4vw;
+    width: 4vw;
+    position:absolute;
+    top:0;
+    right: 0;
+}
+
 .achLock {@include baseAchievementStyle(map-get($colors, 'red'))}
 .achUnlock {@include baseAchievementStyle(map-get($colors, 'green'))}
 .achPlaceholder {@include baseAchievementStyle($text-color); border: 2px solid; border-radius: 5px;}
