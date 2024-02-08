@@ -100,6 +100,9 @@ function initGame() {
     DOMCacheGetOrSet('exportButton').addEventListener('click',() => exportSave())
     DOMCacheGetOrSet('importButton').addEventListener('click', () => createInput('Import Save Data',"",importSave))
     DOMCacheGetOrSet('deleteButton').addEventListener('click', () => deleteSave())
+    //Help Texts
+    DOMCacheGetOrSet('helpButton0').addEventListener('click',() => createAlert('Refinery Help','The Refinery is where you manage the refining of your crude oil into various oil products. In order to get started you must begin heating the refinery now be aware heat does effect your refinery\'s pressure level which if left unchecked will reset the game. To actually get any resources open the crude oil valve to begin filling the refinery with oil, it will be automatically processed based on the temperature and the refining process.','blue'))
+
 }
 
 function updateGame() {
