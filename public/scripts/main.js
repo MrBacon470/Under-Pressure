@@ -102,8 +102,10 @@ function initGame() {
     DOMCacheGetOrSet('deleteButton').addEventListener('click', () => deleteSave())
     //Help Texts
     DOMCacheGetOrSet('helpButton0').addEventListener('click',() => createAlert('Refinery Help','The Refinery is where you manage the refining of your crude oil into various oil products. In order to get started you must begin heating the refinery now be aware heat does effect your refinery\'s pressure level which if left unchecked will reset the game. To actually get any resources open the crude oil valve to begin filling the refinery with oil, it will be automatically processed based on the temperature and the refining process.','blue'))
-
-}
+    DOMCacheGetOrSet('helpButton1').addEventListener('click',() => createAlert('Processing Help','By default this tab will have no recipes as they must be unlocked by imploding your refinery (when it reaches 0% integrity)\nOnce you have recipes unlocked you must reach a minimum amount of resources to actually use the recipe and all recipes will craft in bulk.','blue'))
+    DOMCacheGetOrSet('helpButton2').addEventListener('click',() => createAlert('Shipping Help','Shipping is how you make all your money, products are sold in bulk based on the percentage you selected. The Market Value Modifier changes every 10s, and will either boost the cost or decrease it so be patient. Money is also used for upgrades (once you\'ve imploded once) and increases how much ceramic you can gain.','blue'))
+    DOMCacheGetOrSet('helpButton3').addEventListener('click',() => createAlert('R&D Help','You made it out alright! Congrats in reward for the destruction of your refinery have some ceramic. This is your upgrades center, spend money and ceramic on valuable tech like boosts and new refinery levels :)','blue'))
+}   
 
 function updateGame() {
     diff = (Date.now() - data.time) / 1000
