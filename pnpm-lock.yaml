@@ -10,10 +10,10 @@ importers:
     dependencies:
       astro:
         specifier: ^5.16.3
-        version: 5.16.3(@types/node@24.10.1)(rollup@4.53.3)(sass@1.94.2)(typescript@5.9.3)
+        version: 5.16.3(@types/node@24.10.1)(rollup@4.53.3)(sass@1.97.1)(typescript@5.9.3)
       sass:
-        specifier: ^1.94.2
-        version: 1.94.2
+        specifier: ^1.97.1
+        version: 1.97.1
 
 packages:
 
@@ -1314,8 +1314,8 @@ packages:
     engines: {node: '>=18.0.0', npm: '>=8.0.0'}
     hasBin: true
 
-  sass@1.94.2:
-    resolution: {integrity: sha512-N+7WK20/wOr7CzA2snJcUSSNTCzeCGUTFY3OgeQP3mZ1aj9NMQ0mSTXwlrnd89j33zzQJGqIN52GIOmYrfq46A==}
+  sass@1.97.1:
+    resolution: {integrity: sha512-uf6HoO8fy6ClsrShvMgaKUn14f2EHQLQRtpsZZLeU/Mv0Q1K5P0+x2uvH6Cub39TVVbWNSrraUhDAoFph6vh0A==}
     engines: {node: '>=14.0.0'}
     hasBin: true
 
@@ -2112,7 +2112,7 @@ snapshots:
 
   array-iterate@2.0.1: {}
 
-  astro@5.16.3(@types/node@24.10.1)(rollup@4.53.3)(sass@1.94.2)(typescript@5.9.3):
+  astro@5.16.3(@types/node@24.10.1)(rollup@4.53.3)(sass@1.97.1)(typescript@5.9.3):
     dependencies:
       '@astrojs/compiler': 2.13.0
       '@astrojs/internal-helpers': 0.7.5
@@ -2169,8 +2169,8 @@ snapshots:
       unist-util-visit: 5.0.0
       unstorage: 1.17.3
       vfile: 6.0.3
-      vite: 6.4.1(@types/node@24.10.1)(sass@1.94.2)
-      vitefu: 1.1.1(vite@6.4.1(@types/node@24.10.1)(sass@1.94.2))
+      vite: 6.4.1(@types/node@24.10.1)(sass@1.97.1)
+      vitefu: 1.1.1(vite@6.4.1(@types/node@24.10.1)(sass@1.97.1))
       xxhash-wasm: 1.1.0
       yargs-parser: 21.1.1
       yocto-spinner: 0.2.3
@@ -3160,7 +3160,7 @@ snapshots:
       '@rollup/rollup-win32-x64-msvc': 4.53.3
       fsevents: 2.3.3
 
-  sass@1.94.2:
+  sass@1.97.1:
     dependencies:
       chokidar: 4.0.3
       immutable: 5.1.4
@@ -3388,7 +3388,7 @@ snapshots:
       '@types/unist': 3.0.3
       vfile-message: 4.0.3
 
-  vite@6.4.1(@types/node@24.10.1)(sass@1.94.2):
+  vite@6.4.1(@types/node@24.10.1)(sass@1.97.1):
     dependencies:
       esbuild: 0.25.12
       fdir: 6.5.0(picomatch@4.0.3)
@@ -3399,11 +3399,11 @@ snapshots:
     optionalDependencies:
       '@types/node': 24.10.1
       fsevents: 2.3.3
-      sass: 1.94.2
+      sass: 1.97.1
 
-  vitefu@1.1.1(vite@6.4.1(@types/node@24.10.1)(sass@1.94.2)):
+  vitefu@1.1.1(vite@6.4.1(@types/node@24.10.1)(sass@1.97.1)):
     optionalDependencies:
-      vite: 6.4.1(@types/node@24.10.1)(sass@1.94.2)
+      vite: 6.4.1(@types/node@24.10.1)(sass@1.97.1)
 
   web-namespaces@2.0.1: {}
 
